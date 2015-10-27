@@ -10,7 +10,7 @@ body
     serial-number = "#{serial_number}"
 
   - unless id
-    - Dir.entries(File.join(STATS_PATH, serial_number)).select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }.each do | path |
+    - Dir.entries(File.join(STATS_PATH, serial_number)).sort.select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }.each do | path |
       - filename = File.basename path
       a href="#{serial_number}?id=#{filename}" #{filename}
       br
