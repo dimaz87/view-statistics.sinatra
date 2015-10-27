@@ -4,7 +4,7 @@ require 'zlib'
 require 'tilt'
 require 'slim'
 
-STATS_PATH = File.join(File.dirname(__FILE__), "stats")
+STATS_PATH = ENV['STATS_PATH'] || File.join(File.dirname(__FILE__), "stats")
 
 class PeoplemeterStats < Sinatra::Base
   before do
