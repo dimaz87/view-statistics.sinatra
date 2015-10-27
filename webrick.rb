@@ -5,36 +5,34 @@ require 'openssl'
 ROOT_PATH = File.dirname(__FILE__)
 CERT_PATH = ROOT_PATH + "/ssl"
 
-ENV['RACK_ENV'] = :development.to_s unless ENV.has_key?('RACK_ENV') && !ENV['RACK_ENV'].empty?
+ENV['RACK_ENV'] ||= 'development'
 
-if ENV['RACK_ENV'].to_sym == :nossl
+case ENV['RACK_ENV'].to_sym
+
+when :nossl
   HOST_ADDRESS = '127.0.0.1'
   PORT_NUMBER = 8080
   SSL_ENABLE = false
   VERIFY_PEER = false
-end
 
-if ENV['RACK_ENV'].to_sym == :development
+when :development
   HOST_ADDRESS = '127.0.0.1'
   PORT_NUMBER = 8443
   SSL_ENABLE = true
   VERIFY_PEER = false
-end
 
-if ENV['RACK_ENV'].to_sym == :test
+when :test
   HOST_ADDRESS = '0.0.0.0'
   PORT_NUMBER = 8443
   SSL_ENABLE = true
-  VERIFY_PEER = true
-  PEER_CHAIN_NAME = "certificates_development"
-end
+  VERIFY_PEER = false
 
-if ENV['RACK_ENV'].to_sym == :production
+when :production
   HOST_ADDRESS = '0.0.0.0'
   PORT_NUMBER = 443
   SSL_ENABLE = true
-  VERIFY_PEER = true
-  PEER_CHAIN_NAME = "certificates_production"
+  VERIFY_PEER = false
+
 end
 
 WEBRICK_OPTIONS = {
