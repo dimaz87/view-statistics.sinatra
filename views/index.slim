@@ -1,0 +1,14 @@
+doctype html
+
+head
+  title Peoplemeter statistic
+  link href='style.css' rel='stylesheet' type='text/css'
+
+body
+  h2 Peoplemeter statistic
+  p Got statistic from #{Dir.glob(File.join(STATS_PATH, "*")).select { |path| File.directory? path }.size} STBs:
+
+  - Dir.glob(File.join(STATS_PATH, "*")).entries.each do |path|
+      a> href="#{File.basename path}" #{File.basename path}
+      | (#{Dir.entries(path).select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }.size} records)
+      br

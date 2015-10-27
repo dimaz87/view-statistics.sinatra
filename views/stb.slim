@@ -1,0 +1,19 @@
+doctype html
+
+head
+  title Statistic for STB with serial number "#{serial_number}"
+  link href='css/style.css' rel='stylesheet' type='text/css'
+
+body
+  h2
+    ' Statistic for STB with serial number
+    serial-number = "#{serial_number}"
+
+  - unless id
+    - Dir.entries(File.join(STATS_PATH, serial_number)).select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }.each do | path |
+      - filename = File.basename path
+      a href="#{serial_number}?id=#{filename}" #{filename}
+      br
+  - else
+    p
+      | id => #{id}
