@@ -7,7 +7,7 @@ head
 body
   h2
     ' Statistic for STB with serial number
-    serial-number = "#{serial_number}"
+    serial-number #{serial_number}
 
   - unless id
     - Dir.entries(File.join(STATS_PATH, serial_number)).sort.select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }.each do | path |
