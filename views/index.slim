@@ -8,7 +8,20 @@ body
   h2 Peoplemeter statistic
   p Got statistic from #{Dir.glob(File.join(STATS_PATH, "*")).select { |path| File.directory? path }.size} STBs:
 
+  - last_timestamp = nil
+  - last_serial = nil
   - Dir.glob(File.join(STATS_PATH, "*")).sort.each do |path|
-      a> href="#{File.basename path}" #{File.basename path}
-      | (#{Dir.entries(path).select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }.size} records)
-      br
+      - serial_number = File.basename path
+      - entries = Dir.entries(path).sort.select { |path| File.basename(path) =~ /\d{8}\-\d{6}\.\d{3}$/ }
+      - last_timestamp, last_serial = entries.last, serial_number if entries.last && (!last_timestamp || entries.last > last_timestamp)
+      - if entries.size
+        serial-number
+          a> href="#{serial_number}" #{serial_number}
+        | (#{entries.size} records)
+        br
+
+  - if last_serial
+    p
+      ' Last report from
+      serial-number> #{last_serial}
+      | at #{last_timestamp}
