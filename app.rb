@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'json'
 require 'zlib'
 require 'tilt'
+require 'time'
 require 'slim'
 
 STATS_PATH = ENV['STATS_PATH'] || File.join(File.dirname(__FILE__), "stats")
@@ -26,7 +27,23 @@ class PeoplemeterStats < Sinatra::Base
   end
 
   get '/' do
-    slim :index
+    total_reports = 0
+    last_timestamp = nil
+    last_serial = nil
+    stbs = Hash.new
+
+    dirs = Dir.glob(File.join(STATS_PATH, "*")).select { |path| File.directory? path }.sort
+    dirs.each do |path|
+      serial_number = File.basename path
+      entries = Dir.entries(path).sort.select { |path2| File.basename(path2) =~ /\d{8}\-\d{6}\.\d{3}$/ }
+      if entries.size
+        total_reports += entries.size
+        stbs[serial_number] = entries.size
+        last_timestamp, last_serial = entries.last, serial_number if (!last_timestamp || entries.last > last_timestamp)
+      end
+    end
+
+    slim :index, :locals => { :stbs => stbs, :total_reports => total_reports, :last_timestamp => last_timestamp, :last_serial => last_serial }
   end
 
   get '/:sn' do
