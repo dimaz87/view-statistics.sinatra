@@ -5,6 +5,8 @@ require 'tilt'
 require 'time'
 require 'zlib'
 
+Encoding.default_external = Encoding::UTF_8
+
 STATS_PATH = ENV['STATS_PATH'] || File.join(File.dirname(__FILE__), "stats")
 
 class PeoplemeterStats < Sinatra::Base
@@ -39,7 +41,11 @@ class PeoplemeterStats < Sinatra::Base
       if entries.size
         ip_address = nil
         Zlib::GzipReader.open(File.join(path, entries[-1])) do |report|
-          ip_address = JSON.parse(report.read)['ip']
+          begin
+            ip_address = JSON.parse(report.read)['ip']
+          rescue Encoding::InvalidByteSequenceError
+            p $!
+          end
         end
         stbs[serial_number] = { :size => entries.size, :ip => ip_address }
         total_reports += entries.size
