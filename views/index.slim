@@ -8,8 +8,10 @@ body
   h2 Peoplemeter statistic
   p Got #{total_reports} reports from #{stbs.size} STBs. Last report from #{last_serial} at #{Time.parse last_timestamp.gsub(/[.-]/, ' ')}
 
-  - stbs.sort { |a,b| b[1] <=> a[1] }.each do |v|
+  - stbs.sort { |a,b| b[1][:size] <=> a[1][:size] }.each do |v|
     serial-number
       a> href="#{v[0]}" #{v[0]}
-    | (#{v[1]})
+    ' (#{v[1][:size]})
+    - if v[1][:ip]
+      | => #{v[1][:ip]}
     br

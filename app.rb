@@ -1,9 +1,9 @@
-require 'sinatra/base'
 require 'json'
-require 'zlib'
+require 'sinatra/base'
+require 'slim'
 require 'tilt'
 require 'time'
-require 'slim'
+require 'zlib'
 
 STATS_PATH = ENV['STATS_PATH'] || File.join(File.dirname(__FILE__), "stats")
 
@@ -37,8 +37,12 @@ class PeoplemeterStats < Sinatra::Base
       serial_number = File.basename path
       entries = Dir.entries(path).sort.select { |path2| File.basename(path2) =~ /\d{8}\-\d{6}\.\d{3}$/ }
       if entries.size
+        ip_address = nil
+        Zlib::GzipReader.open(File.join(path, entries[-1])) do |report|
+          ip_address = JSON.parse(report.read)['ip']
+        end
+        stbs[serial_number] = { :size => entries.size, :ip => ip_address }
         total_reports += entries.size
-        stbs[serial_number] = entries.size
         last_timestamp, last_serial = entries.last, serial_number if (!last_timestamp || entries.last > last_timestamp)
       end
     end
