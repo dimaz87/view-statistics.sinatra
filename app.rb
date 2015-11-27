@@ -33,6 +33,7 @@ class PeoplemeterStats < Sinatra::Base
     last_timestamp = nil
     last_serial = nil
     stbs = Hash.new
+    ips = Array.new
 
     dirs = Dir.glob(File.join(STATS_PATH, "*")).select { |path| File.directory? path }.sort
     dirs.each do |path|
@@ -43,6 +44,7 @@ class PeoplemeterStats < Sinatra::Base
         Zlib::GzipReader.open(File.join(path, entries[-1])) do |report|
           begin
             ip_address = JSON.parse(report.read)['ip']
+            ips << ip_address
           rescue Encoding::InvalidByteSequenceError
             p $!
           end
@@ -53,7 +55,7 @@ class PeoplemeterStats < Sinatra::Base
       end
     end
 
-    slim :index, :locals => { :stbs => stbs, :total_reports => total_reports, :last_timestamp => last_timestamp, :last_serial => last_serial }
+    slim :index, :locals => { :stbs => stbs, :ips => ips.uniq, :total_reports => total_reports, :last_timestamp => last_timestamp, :last_serial => last_serial }
   end
 
   get '/:sn' do

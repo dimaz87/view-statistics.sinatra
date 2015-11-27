@@ -6,12 +6,24 @@ head
 
 body
   h2 Peoplemeter statistic
-  p Got #{total_reports} reports from #{stbs.size} STBs. Last report from #{last_serial} at #{Time.parse last_timestamp.gsub(/[.-]/, ' ')}
+  p
+    ' Got
+    span> class='value bold' #{total_reports}
+    ' reports from
+    span> class='value bold' #{stbs.size}
+    ' STBs. Last report from
+    span> class='value bold' #{last_serial}
+    ' at
+    span> #{Time.parse last_timestamp.gsub(/[.-]/, ' ')}
 
   - stbs.sort { |a,b| b[1][:size] <=> a[1][:size] }.each do |v|
-    serial-number
+    .serial-number
       a> href="#{v[0]}" #{v[0]}
-    ' (#{v[1][:size]})
-    - if v[1][:ip]
-      | => #{v[1][:ip]}
+      ' (#{v[1][:size]})
+      - if v[1][:ip]
+        | => #{v[1][:ip]}
     br
+  hr
+  p List of IPs:
+  - ips.each do |ip|
+    .ip-address #{ip}

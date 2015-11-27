@@ -1,34 +1,39 @@
-#header {
-  background-color: black;
-  color: white;
-  text-align: center;
-  padding: 5px;
+a:link {
+  text-decoration: none;
 }
 
-#nav {
-  line-height: 30px;
-  background-color: #eeeeee;
-  height: 300px;
-  width: 100px;
-  float: left;
-  padding: 5px;
+a:visited {
+  text-decoration: none;
 }
 
-#section {
-  width: 350px;
-  float: left;
-  padding: 10px;
+a:hover {
+  text-decoration: underline;
 }
 
-#footer {
-  background-color: black;
-  color: white;
-  clear: both;
-  text-align: center;
-  padding: 5px;
+a:active {
+  text-decoration: underline;
 }
 
-serial-number {
-  color: orange;
+.bold {
+  font-weight: bold;
+}
+
+.value {
+  color: darkblue;
   font-family: Courier, Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-size: medium;
+}
+
+.serial-number {
+  color: darkred;
+  font-family: Courier, Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-size: small;
+  line-height: 0.1;
+}
+
+.ip-address {
+  color: black;
+  font-family: Courier, Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-size: small;
+  line-height: 0.1;
 }
