@@ -44,7 +44,7 @@ class PeoplemeterStats < Sinatra::Base
         Zlib::GzipReader.open(File.join(path, entries[-1])) do |report|
           begin
             ip_address = JSON.parse(report.read)['ip']
-            ips << ip_address
+            ips << ip_address if ip_address
           rescue Encoding::InvalidByteSequenceError
             p $!
           end
