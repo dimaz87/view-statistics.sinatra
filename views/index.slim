@@ -24,7 +24,10 @@ body
         | => #{v[1][:ip]}
     br
   hr
-  p List of IPs:
-  - ips.each do |ip|
+  p
+    | List of IPs (
+    span> class="value bold" #{ips.size}
+    | total):
+  - ips.sort.each do |ip|
     .ip-address #{ip}
     br
