@@ -1,9 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    bson (3.2.6)
-    mongo (2.1.2)
-      bson (~> 3.0)
     passenger (5.0.21)
       rack
       rake (>= 0.8.1)
@@ -25,7 +22,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mongo
   passenger (>= 5.0.11)
   sinatra
   slim
+
+BUNDLED WITH
+   1.10.6
