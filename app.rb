@@ -35,7 +35,7 @@ class PeoplemeterStats < Sinatra::Base
     stbs = Hash.new
     ips = Array.new
 
-    dirs = Dir.glob(File.join(STATS_PATH, "*")).select { |path| File.directory? path }.sort
+    dirs = Dir.glob(File.join(STATS_PATH, '*')).select { |path| File.directory? path }.sort
     dirs.each do |path|
       serial_number = File.basename path
       entries = Dir.entries(path).sort.select { |path2| File.basename(path2) =~ /\d{8}\-\d{6}\.\d{3}$/ }
@@ -60,9 +60,7 @@ class PeoplemeterStats < Sinatra::Base
 
   get '/:sn' do
     serial_number = params[:sn]
-    halt 404, "Wrong serial number" unless File.directory? File.join(STATS_PATH, serial_number)
-    #template = Tilt.new('views/stb.slim')
-    #template.render self, { :serial_number => serial_number }
+    halt 404, 'Wrong serial number' unless File.directory? File.join(STATS_PATH, serial_number)
     slim :stb, :locals => { :serial_number => serial_number, :id => params[:id] }
   end
 end
