@@ -39,7 +39,7 @@ class PeoplemeterStats < Sinatra::Base
     dirs.each do |path|
       serial_number = File.basename path
       entries = Dir.entries(path).sort.select { |path2| File.basename(path2) =~ /\d{8}\-\d{6}\.\d{3}$/ }
-      if entries.size
+      if !entries.empty?
         ip_address = nil
         Zlib::GzipReader.open(File.join(path, entries[-1])) do |report|
           begin
